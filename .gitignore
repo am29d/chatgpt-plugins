@@ -1,0 +1,3 @@
+# Runtime bundles are the contents of this distribution repository.
+!/plugins/*/dist/
+!/plugins/*/dist/**

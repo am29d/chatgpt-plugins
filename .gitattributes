@@ -1,0 +1,2 @@
+# Preserve release bytes and SHA256SUMS on every platform.
+/plugins/** -text

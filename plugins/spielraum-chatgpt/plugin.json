@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "spielraum-chatgpt",
+  "version": "0.7.0-beta.1",
+  "description": "Model apartments and multi-floor houses through chat with the Spielraum planner.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Spielraum",
+        "logo": "./assets/cube.svg",
+        "logoDark": "./assets/cube-dark.svg",
+        "composerIcon": "./assets/cube.svg",
+        "composerIconDark": "./assets/cube-dark.svg",
+        "shortDescription": "Model your home through chat",
+        "longDescription": "Start empty and add named floors, room divisions, doors, windows and straight stairs through chat. Explore each floor using Spielraum’s existing 2D/3D planner.",
+        "capabilities": [
+          "Interactive"
+        ],
+        "defaultPrompt": "Open Spielraum and help me model my home. Ask about its floors, dimensions and room layout."
+      }
+    }
+  }
+}
