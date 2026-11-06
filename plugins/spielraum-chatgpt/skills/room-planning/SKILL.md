@@ -5,6 +5,18 @@ description: Model and furnish apartments and multi-floor houses through chat or
 
 # Model a home with Spielraum
 
+## Sign-in
+
+Open `spielraum.panel` when sign-in is required. Let the user use **Sign in** and
+complete Clerk login in their browser. `spielraum.get_auth` checks status;
+`spielraum.sign_in` starts the device flow only when requested. Show its verification
+URL and public user code. Never request passwords, identity/refresh tokens or the
+private device code in chat. `spielraum.sign_out` signs out this device when asked,
+preserving homes. Every home tool is gated even when called without opening the UI.
+Each verified account has a separate local profile; never claim an old anonymous
+home for the first person who logs in or import it without an explicit ownership
+choice and backup.
+
 Read `spielraum.get_workspace` before creating or editing. A saved home survives
 restarts and is shared by the sidebar and conversation. When first showing a
 home, call `spielraum.panel` once after creation, only if no planner is already
@@ -138,8 +150,20 @@ x increases east, z increases south. Convert other units before calling tools.
 ceiling height, 0.2 m exterior walls, 0.12 m interior walls, 2.05 m door height
 and 1.2 m window height. Declare assumptions; do not call them measured.
 
-- Four exterior walls are generated. Add openings through `exteriorOpenings`
-  keyed north/south/east/west. Use absolute start/end positions along the wall.
+- Without `outline`, four exterior walls are generated. Add openings through
+  `exteriorOpenings` keyed north/south/east/west.
+- For L/U/stepped apartments, supply `outline`: ordered `{x,z,openings?:[...]}`
+  clear-interior corners. Close implicitly; never repeat the first vertex. Either
+  winding is accepted. Edges must be axis-aligned, nonzero, nonintersecting and
+  turn at every vertex (merge collinear edges). Width/depth are the complete
+  bounding box, spanning x=0..width and z=0..depth; the origin can be outside the
+  apartment at a cutout. Each vertex owns the boundary edge to the NEXT vertex.
+  Put exterior openings on that vertex, using absolute ascending x coordinates
+  for horizontal edges or z for vertical edges, regardless of winding. Leave
+  `exteriorOpenings` empty. Walls and flooring follow the outline automatically.
+  Preserve `outline` and all edge openings on edits; omission restores a rectangle.
+- Mark only the apartment entrance from communal/outside space with `entry:true`
+  on its exterior door. Balcony/loggia doors are not entrances.
 - `walls` contains interior walls in the existing PlanWall format. `axis: x`
   runs east/west at z=`at`; `axis: z` runs north/south at x=`at`.
 - Wall openings use the existing door/window/sliding contracts. Sort by start;
@@ -169,13 +193,39 @@ after a user edits them directly.
 
 The viewer reuses PropertyFloor/PlanWall, shared masonry/opening/stair builders,
 PlannerScene, PlayCanvas, PlanDrawing and existing view controls. Current creation
-supports rectangular footprints and axis-aligned walls. Arbitrary polygons,
+supports rectangular and orthogonal polygon footprints with axis-aligned walls. Diagonal or curved boundaries,
 sloped roofs, curved/spiral stairs and image-generation tools
 are not exposed yet. A DG can be a named floor; do not claim a sloped roof.
 
 The active home is stored locally and shared by MCP processes. Tests and
 previews can use `SPIELRAUM_DATA_DIR` for an isolated workspace. Existing saved
 layouts/galleries are never read or overwritten. Spielraum makes no AI API calls itself.
+
+## Reconstruct a floor plan from an image
+
+First distinguish the apartment's boundary from communal stairs/landings,
+neighboring homes, fixtures, dimension lines and door-swing arcs. Trace the full
+clear-interior outline before partitions. Never fill its bounding rectangle when
+there are cutouts. A loggia needs its actual separating wall/opening; decide from
+the source whether it belongs inside the modeled outline. Common stairs outside
+this apartment are not an internal stair flight.
+
+Read printed dimension chains and distinguish overall dimensions from dimensions
+of one wing. Establish one coordinate frame and scale; verify independent chains
+agree. Do not invent survey precision from pixels. Keep image-derived offsets
+estimated; say which dimensions/defaults are assumed. Do not model counters,
+wardrobes, sanitary fixtures or swing arcs as structural walls.
+
+Place physical partitions and actual doors/windows separately from room label
+areas. A room label creates no enclosure or access. For an irregular room, use a
+contained rectangular label/focus area; never let it bridge a cutout. Mark the
+actual entrance door, then call `inspect_floor_plan`. Repair unreachable rooms by
+checking the SOURCE for missing/misplaced openings or walls, not inventing doors.
+Missing entrance or analysis-limit results leave access unverified. Run inspection
+again after structural corrections. It checks connectivity, not image fidelity,
+minimum passage widths or building regulations. Compare the saved 2D boundary,
+partitions and openings to the source before calling the reconstruction complete;
+review 3D afterwards and disclose any remaining uncertainty.
 
 ## Detailed furniture of any kind
 

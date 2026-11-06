@@ -1,7 +1,7 @@
 # Spielraum desktop beta
 
 Model and furnish a home through chat, then explore it in an interactive 2D/3D
-planner. Each OS user keeps their own saved home on their computer.
+planner. Each signed-in account keeps its own saved home on this computer.
 
 ## Requirements and setup
 
@@ -9,14 +9,19 @@ planner. Each OS user keeps their own saved home on their computer.
 - Bun **1.4.4**, available as `bun` to the desktop application. Install Bun from
   [bun.sh](https://bun.sh/docs/installation) and verify with `bun --version`.
 - Access to the private `am29d/chatgpt-plugins` GitHub repository.
+- An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
+- OS credential storage: macOS Keychain, Windows Credential Manager, or an unlocked
+  Linux Secret Service such as GNOME Keyring/KWallet. There is no plaintext fallback.
 
 Follow the [marketplace installation instructions](../../README.md), install
 `spielraum-chatgpt@am29d-plugins`, and start a new chat. Ask:
 
 > Open Spielraum and help me create my home.
 
-The first launch shows an empty workspace. No example home or developer data is
-included. You do not need a source checkout, `node_modules`, an OpenAI API key or
+The first launch asks you to sign in. Choose **Sign in**, then **Continue in browser**
+and approve the code shown in Spielraum. Use your invited account; accept its
+invitation first if needed. A new signed-in account opens an empty workspace.
+No example home or developer data is included. You do not need a source checkout, `node_modules`, an OpenAI API key or
 a separately running preview server. ChatGPT provides the model; the plugin runs
 planner tools locally. The source code is private; the bundled JavaScript remains
 inspectable.
@@ -24,10 +29,17 @@ inspectable.
 ## Saved homes and updates
 
 The home, undo history and preferences are stored in
-`~/.local/share/spielraum/workspace.sqlite`, outside the plugin installation.
+`~/.local/share/spielraum/profiles/<account-hash>/workspace.sqlite`, outside the plugin installation.
 Updates replace the plugin files while preserving that directory. Multiple chats
-and local plugin processes share the same home for that OS user. Different people
-using the same OS account currently share the home.
+and local plugin processes share the currently signed-in account's home.
+**Sign out** clears device credentials and preserves homes. Account switching
+opens a separate profile. This does not encrypt homes or protect them from the
+local OS user.
+
+The old anonymous `~/.local/share/spielraum/workspace.sqlite` remains untouched
+and is never assigned to the first login. Importing it needs explicit ownership
+selection. `auth.sqlite` holds only device-session coordination; identity and
+refresh tokens are stored in the OS credential store.
 
 Quit the desktop host and any Spielraum preview processes before copying the data
 directory for a manual backup. Preserve the whole directory, including any SQLite
@@ -36,8 +48,12 @@ a database migrated by a newer version. Undo history is not a backup.
 
 ## Current beta boundaries
 
-- Clerk sign-in and account-specific local profiles are not implemented. Access to
-  the private GitHub repository controls downloads, not the use of a copied package.
+- Clerk currently targets the Spielraum **development** instance. Revalidation
+  happens after at most ten minutes of active use or sooner at token expiry.
+  Edits do not contact Clerk each time. Outages block access once revalidation is
+  due and preserve saved homes. Live revocation timing still needs verification.
+- Someone controlling the local executable can modify it to bypass the gate.
+  The older `0.7.0-beta.1` release has no login gate.
 - Cloud backup, cross-device sync and a hosted ChatGPT web app are not included.
 - Embedded keyboard defaults remain disabled; use Search, Undo/Redo and other
   visible controls. Custom shortcut compatibility still needs real-host validation.
