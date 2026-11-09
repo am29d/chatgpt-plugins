@@ -68,6 +68,72 @@ editable approximations. For detailed descriptions, product references and photo
 reconstruction, add a generic ThreeJSON model as described below. Do not claim an
 exact product mesh or illumination simulation for a lamp.
 
+For a furnishing proposal, identify the occupants, intended uses and required
+pieces, stating practical assumptions. Reserve entrances and circulation first;
+place large furniture, then related groups such as chairs at tables and storage
+with usable fronts. Prefer omitting optional pieces to blocking essential use.
+For an intended dining set, default to tucking about 70% of each chair's depth
+under the tabletop in the stored position, facing the table with its back
+outside the tabletop edge. Use explicit positions for the group. Adjust the
+spacing along the edge or tuck less if the chair would hit a leg, apron or
+tabletop. Check pullout and seated clearance separately, and follow the user's
+placement preference when specified.
+For a whole home, room redesign or critique, follow [Furnish and review a
+home](design-review.md): plan each room's functions, compare arrangements at
+bottlenecks, verify use in context, and compare clearances before and after.
+Reserve the operating space for each required use before filling the room.
+Keep confirmed blockers, missed planning targets, and unverified conditions
+separate. Apply the linked room-specific benchmarks to the relevant scenario.
+Review spare floor and wall space for unmet uses. Compare usable worktop,
+reachable storage or other task space gained after reserving circulation and
+operating clearances. Give remaining open space a purpose.
+Default to zero modeled gap behind beds, kitchen cabinets, wardrobes, bookcases
+and other wall-backed furniture. Choose a solid wall before placing a bed and
+put the headboard against it. Leave usable approaches at the foot and on both
+sides of a double bed where possible, and at least one side of a single bed.
+Keep the center of the room available for circulation or a group that needs
+access around it, such as a dining set. Calculate center coordinates from the
+physical wall face and the rotated furniture bounds. If a door, window, fitting
+or required clearance makes that wall unsuitable, try another wall first.
+Preserve deliberate clearances and user-specified positions. Verify the actual
+rear edge yourself for explicit coordinates and custom models. Check for a
+solid wall even if the inspection returns no gap hint. If no suitable wall
+works, explain why before choosing a freestanding placement.
+For a requested or clearly intended continuous furniture run (for example
+kitchen cabinets and an adjacent integrated refrigerator), calculate all rear,
+side and front edges in world coordinates, including rotation and the evaluated
+model bounds. Where the physical installation permits, join the facing sides
+without an arbitrary gap and align fronts and wall-facing backs. Check the
+end of the run against the side wall as well as the wall behind it. Use actual
+wall faces and avoid cumulative rounding; inspect the saved plan in 2D and 3D.
+These are design intentions, not proof that every nearby cabinet belongs to the
+same run: preserve specified gaps and make room for doors, handles, ventilation,
+services, uneven walls and equipment instructions. If details are missing,
+state the assumption and do not assert real-world installation clearance.
+After furnishing, call `spielraum.inspect_furnished_layout` on the saved revision.
+Review door/physical-intersection issues, route results and provisional furniture
+use zones. Check wallAlignment for unintended gaps; it is advisory and must not
+override explicit user placement or real clearances. Review adjacencyHints,
+when returned, for candidate side-wall and furniture-to-furniture gaps, including
+custom models. Decide whether the pieces actually form a run; measure
+and correct unintended gaps, then re-inspect the whole layout. Missing hints do
+not establish that all gaps were checked, especially for rotated/custom shapes.
+Review nearby chair/table orientation candidates and their intended pairings;
+proximity alone does not prove a relationship. Inspect chair pullout
+scenarios as provisional final-position checks; they do not check the seated
+person or the path of movement. A sampled wardrobe-opening conflict applies
+only to the assumed two-door configuration; no sampled conflict does not prove
+the entire sweep or actual hardware is clear. Resolve relevant
+conflicts, then inspect again after the final edit.
+An unverified route is not proof of a blockage or a clear route. Bed-side needs,
+wardrobe fronts, chair/desk use, window operation and appliance access require
+confirmation; do not claim the report checks them fully. A clear room route
+reaches only some space in the room; a clear furniture target reaches a point in
+its assumed zone, not necessarily the whole zone or the furniture's full use.
+Estimated dimensions limit
+real-world conclusions. If no feasible arrangement is found, explain the tradeoff
+and offer smaller or fewer items; do not change structural geometry to make it fit.
+
 Choose floorId/roomId from get_workspace; null is valid only for a floor without
 named rooms. Omit x/z together for automatic placement. A room/floor update
 without coordinates proposes a new placement. Resize anchor west/east/north/south
@@ -137,10 +203,15 @@ user measurements and specified positions automatically.
 
 Set `finishes.floor` to `{ material: "oak" | "tile" | "concrete", color?: "#RRGGBB" }`
 and `finishes.walls` to `{ material: "paint" | "concrete", color?: "#RRGGBB" }`.
-Interior walls can set `finish` to override the floor's wall finish. Defaults
-are oak and warm-white paint; plain concrete defaults to gray. Preserve these
-fields on later edits. Tile/concrete are simple finishes, without scanned
-textures or a product catalog. Oak uses the existing texture; its color is a tint.
+Interior walls can set `finish` to override the level's wall finish. Oak and
+warm-white paint are the level defaults.
+Set `rooms[].floorFinish` to `{ material: "tile" }` for bathrooms, en suites,
+toilets and shower rooms unless the source or user specifies another finish.
+Use this field for a real floor surface. Keep open-plan kitchens, dining areas
+and living rooms on the same continuous finish unless the plan specifies a
+transition. A separate kitchen can use its own finish when appropriate.
+Preserve level and room finishes on later edits. Tile and concrete are simple
+modeled finishes. Oak uses the existing texture and takes an optional tint.
 
 ## Describe geometry
 
@@ -149,6 +220,15 @@ x increases east, z increases south. Convert other units before calling tools.
 `width` and `depth` are clear interior dimensions (1–30 m). Defaults are 2.5 m
 ceiling height, 0.2 m exterior walls, 0.12 m interior walls, 2.05 m door height
 and 1.2 m window height. Declare assumptions; do not call them measured.
+For 3D dimensions, set `ceilingHeightBasis`, `wallThicknessBasis`, wall
+`thicknessBasis`/`heightBasis`, opening `heightBasis`/window `sillBasis`, and
+stair `riseBasis` when the source is known. Use `plan` for printed values,
+`measured` for user measurements, `deduced` for values supported by visible
+plan evidence, and `assumed` for provisional defaults. An unmarked value is
+reported as assumed. A door swing can support position and handing, but does
+not establish its height. A 2D stair arrow supports direction, not rise.
+Preserve these basis fields on edits and never label a conventional default
+as measured.
 
 - Without `outline`, four exterior walls are generated. Add openings through
   `exteriorOpenings` keyed north/south/east/west.
@@ -175,6 +255,7 @@ and 1.2 m window height. Declare assumptions; do not call them measured.
   Unverified room bounds default to `basis: Image estimate`.
 - `stairs` defines straight flights with bounds, rise, steps and direction.
   Rise includes the floor slab; ask for stair location and floor-to-floor height.
+  Set `receivingFloorId` to the stable ID of the floor reached when known.
   The receiving floor needs an explicit rectangular `floorOpenings` entry.
   Each level is viewed separately; this is not a stacked whole-building view.
 
@@ -219,13 +300,17 @@ wardrobes, sanitary fixtures or swing arcs as structural walls.
 Place physical partitions and actual doors/windows separately from room label
 areas. A room label creates no enclosure or access. For an irregular room, use a
 contained rectangular label/focus area; never let it bridge a cutout. Mark the
-actual entrance door, then call `inspect_floor_plan`. Repair unreachable rooms by
-checking the SOURCE for missing/misplaced openings or walls, not inventing doors.
-Missing entrance or analysis-limit results leave access unverified. Run inspection
-again after structural corrections. It checks connectivity, not image fidelity,
-minimum passage widths or building regulations. Compare the saved 2D boundary,
-partitions and openings to the source before calling the reconstruction complete;
-review 3D afterwards and disclose any remaining uncertainty.
+actual entrance door, then call `inspect_floor_plan`. Check the source for
+unreachable rooms, reported wall gaps and offsets, and openings crossed by
+partitions. Review `open_room_boundary` warnings against the source; open layouts
+can be intentional. Review vertical dimensions and door, stair and receiving
+stairwell warnings against printed heights, sections, notes and measurements.
+Report material assumptions and unresolved warnings. For intended joins, align the wall spans or centerlines in
+`set_floor`. Preserve documented free ends and doorways. Run inspection again
+after structural corrections and verify the corners in both the full and
+cutaway views. Missing entrance or analysis-limit results leave access
+unverified. Compare the saved 2D boundary, partitions and openings to the source
+before calling the reconstruction complete and disclose remaining uncertainty.
 
 ## Detailed furniture of any kind
 
