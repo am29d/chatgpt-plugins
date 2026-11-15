@@ -7,24 +7,22 @@ inspected.
 
 ## Install
 
-You need a desktop host that supports local MCP plugins, Git, and each plugin's
-runtime prerequisites. This is not a ChatGPT web/mobile installation.
+### Quick install with one prompt
 
-This beta repository is private. Your GitHub account must have repository access,
-and Git must be able to authenticate before adding the marketplace. Repository
-access controls downloads. Spielraum also requires an invited Clerk beta account
-in releases that include the sign-in gate.
+Paste this into Codex on macOS:
 
-With an authenticated HTTPS Git setup:
+> Install Spielraum from the public `am29d/chatgpt-plugins` marketplace, open it, and guide me through sign-in.
+
+Spielraum uses the Node runtime provided by Codex when available; you do not need
+to install Node or Bun separately. An invited Spielraum beta account is required
+to sign in.
+
+### Manual install
+
+In Codex on macOS, add the public marketplace:
 
 ```sh
 codex plugin marketplace add am29d/chatgpt-plugins --ref main
-```
-
-Or, if your GitHub access uses SSH:
-
-```sh
-codex plugin marketplace add git@github.com:am29d/chatgpt-plugins.git --ref main
 ```
 
 Open the desktop Plugins directory, choose **Alex's ChatGPT Plugins**, and install
@@ -41,21 +39,6 @@ use a supported desktop app to view interactive planner UI.
 The catalog is [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json).
 Plugin-specific setup and limitations are documented in each `plugins/<name>/README.md`.
 For Spielraum, see [its installation guide](plugins/spielraum-chatgpt/README.md).
-
-### Install through a Codex prompt
-
-Copy this into Codex:
-
-> Install Spielraum from `am29d/chatgpt-plugins` using my existing GitHub access.
-> Check that Git and a host-provided Node.js 24+ runtime are available on macOS, and explain any missing prerequisite.
-> Run `codex plugin marketplace add am29d/chatgpt-plugins --ref main`, then
-> `codex plugin add spielraum-chatgpt@am29d-plugins`. If my Git setup uses SSH,
-> use `git@github.com:am29d/chatgpt-plugins.git` as the marketplace source instead.
-> Tell me if Codex needs a new chat or restart, then open Spielraum and guide me
-> through browser sign-in. Keep passwords and tokens out of chat.
-
-Both repository access and a Clerk invitation are required for the gated beta.
-The first published release, `0.7.0-beta.1`, predates sign-in enforcement.
 
 ## Update
 

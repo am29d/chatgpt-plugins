@@ -6,8 +6,7 @@ planner. Each signed-in account keeps its own saved home on this computer.
 ## Requirements and setup
 
 - A supported desktop host with local MCP plugin execution and MCP App UI.
-- macOS with an available Node.js **24+** runtime including `node:sqlite`. The launcher prefers the desktop host runtime; no Bun or Node runtime is bundled.
-- Access to the private `am29d/chatgpt-plugins` GitHub repository.
+- macOS and Codex desktop. The launcher discovers the host-provided runtime; no separate Node or Bun installation is normally needed.
 - An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
 - macOS Keychain access. Windows/Linux credential adapters are pending for this Node candidate; there is no plaintext fallback.
 
