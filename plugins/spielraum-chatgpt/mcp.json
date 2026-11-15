@@ -3,7 +3,7 @@
   "mcpServers": {
     "spielraum": {
       "type": "stdio",
-      "command": "${PLUGIN_ROOT}/launch/spielraum",
+      "command": "./launch/spielraum",
       "args": [],
       "cwd": "${PLUGIN_ROOT}"
     }
