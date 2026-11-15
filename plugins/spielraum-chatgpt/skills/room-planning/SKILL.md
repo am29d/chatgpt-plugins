@@ -390,3 +390,7 @@ restores the family approximation. Existing room locks, revisions, retries and u
 Keep descriptors compact: max 64 parts, 128 KB, 100k generated vertices/triangles,
 and subdivision at most level 3. Home-level budgets also apply. On a budget error,
 reduce detail. Label image-derived dimensions estimated and explain inferred details.
+
+## Open-plan room grouping
+
+Kitchen, dining and living zones with a shared wall-free edge appear as one selectable room; corridors remain separate even without doors. Keep their zone IDs and actual polygons. Do not merge zones or remove real walls merely to change navigation. For unusual names or intentional separation, use the spatial `zone` command with `roomGrouping: "open-plan"` or `"separate"`; `null` restores automatic English/German name recognition. Preview before committing and respect affected-zone locks. The override controls eligibility, not geometry: partial walls, doorways, corner-only contact and disconnected zones remain separate. Surface finish edits still target the chosen member zone.
