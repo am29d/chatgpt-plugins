@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+root=$(CDPATH= cd "$(dirname "$0")/.." && pwd)
+try_node() {
+  case "$1" in
+    /*) if [ -x "$1" ] && "$1" -e 'if (+process.versions.node.split(".")[0] < 24) process.exit(1); require("node:sqlite")' </dev/null >/dev/null 2>&1; then
+      exec "$1" "$root/dist/stdio.js"
+    fi ;;
+  esac
+}
+cli_resources=
+case "${CODEX_CLI_PATH:-}" in /*/*) cli_resources=${CODEX_CLI_PATH%/*} ;; esac
+for candidate in "${CODEX_MCP_NODE_PATH:-}" "${CODEX_BROWSER_USE_NODE_PATH:-}" "${CODEX_ELECTRON_RESOURCES_PATH:-}/cua_node/bin/node" "$cli_resources/cua_node/bin/node" "${XDG_CACHE_HOME:-${HOME:-}/.cache}/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node" /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node /Applications/Codex.app/Contents/Resources/cua_node/bin/node; do
+  try_node "$candidate"
+done
+node_path=$(command -v node || :)
+try_node "$node_path"
+printf '%s\n' 'Spielraum requires an available Node.js 24+ runtime with node:sqlite. Update the desktop host or set CODEX_MCP_NODE_PATH.' >&2
+exit 127

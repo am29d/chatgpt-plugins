@@ -6,12 +6,10 @@ planner. Each signed-in account keeps its own saved home on this computer.
 ## Requirements and setup
 
 - A supported desktop host with local MCP plugin execution and MCP App UI.
-- Bun **1.4.4**, available as `bun` to the desktop application. Install Bun from
-  [bun.sh](https://bun.sh/docs/installation) and verify with `bun --version`.
+- macOS with an available Node.js **24+** runtime including `node:sqlite`. The launcher prefers the desktop host runtime; no Bun or Node runtime is bundled.
 - Access to the private `am29d/chatgpt-plugins` GitHub repository.
 - An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
-- OS credential storage: macOS Keychain, Windows Credential Manager, or an unlocked
-  Linux Secret Service such as GNOME Keyring/KWallet. There is no plaintext fallback.
+- macOS Keychain access. Windows/Linux credential adapters are pending for this Node candidate; there is no plaintext fallback.
 
 Follow the [marketplace installation instructions](../../README.md), install
 `spielraum-chatgpt@am29d-plugins`, and start a new chat. Ask:
@@ -57,8 +55,7 @@ a database migrated by a newer version. Undo history is not a backup.
 - Cloud backup, cross-device sync and a hosted ChatGPT web app are not included.
 - Embedded keyboard defaults remain disabled; use Search, Undo/Redo and other
   visible controls. Custom shortcut compatibility still needs real-host validation.
-- Bun is required. If startup reports `bun` missing, ensure the desktop app can
-  find it on its PATH and restart the app. Do not paste credentials into chat.
+- If runtime discovery fails, update the desktop host or configure `CODEX_MCP_NODE_PATH` to an existing Node.js 24+ executable. Do not paste credentials into chat.
 - OS/host coverage is limited to the verification documented for each release;
   the package being JavaScript is not proof of Windows/Linux host compatibility.
 

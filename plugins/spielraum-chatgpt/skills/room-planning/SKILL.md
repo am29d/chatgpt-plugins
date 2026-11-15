@@ -31,14 +31,36 @@ Use `spielraum.create_apartment` for a single floor or
 `spielraum.create_building` for named levels, such as Keller, EG, OG and DG.
 Up to eight floors are supported, each with its own dimensions and layout.
 An identical retry is safe; a different creation never overwrites an open home.
-Use `spielraum.set_floor` to revise or add one floor afterwards. Pass the current
-building ID and `expectedRevision`; include the complete floor plan to retain.
-Omitted collections become empty. Other floors stay unchanged. On conflict,
-read the latest plan and reapply the user's intended change.
+For existing structure, read `spielraum.inspect_spatial_floor`: physical spaces,
+semantic zones, wall assemblies, stable side surfaces, junctions and openings
+have distinct identities. Use `spielraum.preview_spatial_floor`, then
+`spielraum.edit_spatial_floor` with the same saved revision and command batch.
+Unlock affected zones first and request `topologyPolicy: repartition` explicitly
+when a change splits or merges spaces. Respect fixed zones; follow-space zones
+can track their enclosing wall. Unsupported connected edits require a consistent
+`replace-floor` command, never guessed disconnections. A batch is one undoable
+edit; `itemChanges` can explicitly rehost, detach, remove or place affected items
+in that same transaction. Preview does not save anything. Reuse operationId and
+exact arguments on uncertain retries; reread/replan after a revision conflict.
+
+`spielraum.set_floor` remains an import/full-replacement shorthand for adding
+floors or faithfully representable simple plans. Supply the complete legacy
+floor fields to retain; omitted collections become empty. It rejects rich
+spatial references it cannot preserve. Never remove spatial/attachment data to
+work around that rejection. Other floors stay unchanged.
 
 Furniture is separate and always preserved by set_floor. Preserve each room's
 stable id on rename. Structural edits that invalidate furniture are rejected;
 move or reassign affected items before retrying.
+
+To place a picture, shelf or other bounded item on a wall, create the item, then
+use `spielraum.set_surface_attachment` with the stable surface ID and local
+u/v center coordinates in metres. Choose start/end/proportional anchoring
+deliberately. Mounted world position and orientation follow the surface; use
+the attachment tool to reanchor or detach, rather than patching x/z/elevation.
+Validate complete extents and openings. Spatial fit does not establish mounting
+hardware, load capacity or real-world wall construction. Roof slopes and
+diagonal/curved wall geometry remain unsupported; record the missing evidence.
 
 ## Furniture through chat and voice
 
@@ -81,6 +103,17 @@ placement preference when specified.
 For a whole home, room redesign or critique, follow [Furnish and review a
 home](design-review.md): plan each room's functions, compare arrangements at
 bottlenecks, verify use in context, and compare clearances before and after.
+Treat a request for ideas, a review or “what if” as read-only. For a redesign or
+a tight placement, pass the proposed furniture batch as `candidate` to
+`inspect_furnished_layout` before applying it. Use the same saved revision and
+route width for the current layout and each alternative. A candidate result
+describes a simulation. Apply only the chosen batch if the user asked for an
+edit, then inspect the new saved revision. If it changed in the meantime, read
+again and compare against the new state.
+For a narrow edit, preserve every unaffected item, dimension, position, floor
+and opening. Broad requests such as “make the apartment feel bigger” authorize
+designing with the existing shell. Confirm before moving walls or openings,
+removing existing pieces, or changing locked furniture to make a proposal fit.
 Reserve the operating space for each required use before filling the room.
 Keep confirmed blockers, missed planning targets, and unverified conditions
 separate. Apply the linked room-specific benchmarks to the relevant scenario.
@@ -201,7 +234,7 @@ user measurements and specified positions automatically.
 
 ## Materials and colors
 
-Set `finishes.floor` to `{ material: "oak" | "tile" | "concrete", color?: "#RRGGBB" }`
+Set `finishes.floor` to `{ material: "oak" | "tile" | "concrete" | "carpet", color?: "#RRGGBB" }`
 and `finishes.walls` to `{ material: "paint" | "concrete", color?: "#RRGGBB" }`.
 Interior walls can set `finish` to override the level's wall finish. Oak and
 warm-white paint are the level defaults.
@@ -211,7 +244,8 @@ Use this field for a real floor surface. Keep open-plan kitchens, dining areas
 and living rooms on the same continuous finish unless the plan specifies a
 transition. A separate kitchen can use its own finish when appropriate.
 Preserve level and room finishes on later edits. Tile and concrete are simple
-modeled finishes. Oak uses the existing texture and takes an optional tint.
+modeled finishes. Oak and carpet are textured and can be tinted. Use carpet
+for a continuous fitted surface and a rug furniture item for a movable rug.
 
 ## Describe geometry
 

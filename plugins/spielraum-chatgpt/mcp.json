@@ -3,8 +3,8 @@
   "mcpServers": {
     "spielraum": {
       "type": "stdio",
-      "command": "bun",
-      "args": ["${PLUGIN_ROOT}/dist/stdio.js"],
+      "command": "${PLUGIN_ROOT}/launch/spielraum",
+      "args": [],
       "cwd": "${PLUGIN_ROOT}"
     }
   }

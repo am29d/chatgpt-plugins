@@ -6,6 +6,13 @@ balance, scale, alignments and what people see from the entrances. Distinguish
 the actual walls and openings from room labels. Plumbing, radiators, sill
 heights, appliance requirements and access needs that are missing stay unknown.
 
+## From brief to saved layout
+
+- Separate what must stay, what must work and what can change. Record retained furniture and its floor or room before moving anything. Treat named dimensions, door and window positions, service points, and a requested seat count as constraints. Ask one focused question if an ambiguity would change the plan materially. Otherwise state the working assumption and show what it affects.
+- Give the home a coherent direction. Choose one priority per room, such as conversation, study or free play, and one or two material or color choices that carry between rooms. Size pieces in relation to their use and to each other. Align seating, rug and lighting to the activity rather than the room's geometric center. Protect daylight and keep useful open space where people enter, pass or play.
+- Compare meaningful alternatives at the tightest point, such as a smaller table against a shifted dining group. For each candidate, name the gain and the cost in terms of seats, useful surface, storage or circulation. Omit optional furniture if it compromises a required use. Where a requirement genuinely cannot fit, give the user a choice between the closest feasible layouts and say what each gives up.
+- For an existing home, inspect the saved revision, then send the furniture operations to `inspect_furnished_layout` as a `candidate` with that building ID and revision. Compare candidates against the same baseline and route width. Read the returned positions because automatic placement can differ from the intended arrangement. Commit only when the user has asked for a change. Preserve the floor plans and unrelated items, and recheck the saved result after applying the chosen batch.
+
 1. Reserve routes from the entrance to each room, the loggia and each required
    use position. Identify the narrowest doorway and each tight turn first.
    Compare the furnished plan with the same unfurnished geometry and settings
@@ -29,9 +36,9 @@ heights, appliance requirements and access needs that are missing stay unknown.
    drawers, bed approach, and access to windows. Evaluate reasonable simultaneous
    uses where relevant (e.g. walking to the loggia with a diner seated). A clear
    room target only proves a modeled route to some area in that room.
-   For a dining route that also serves another room, test a second layout state
-   with all relevant chairs pulled out at once in a disposable copy. Confirm the
-   connection still works. Label this a chair-position proxy; it does not include
+   For a dining route that also serves another room, simulate all relevant chairs
+   pulled out together in a read-only candidate. Check that the required destination
+   is still reachable at the same route width. Label this a chair-position proxy. It does not include
    people, moving chairs or appliance sweeps. Use the quiet state for the saved
    furniture arrangement. If a target is missing, examine the approach around
    open door leaves and between furniture before enlarging or removing a piece.
