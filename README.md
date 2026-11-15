@@ -13,9 +13,10 @@ Paste this into Codex on macOS:
 
 > Install Spielraum from the public `am29d/chatgpt-plugins` marketplace, open it, and guide me through sign-in.
 
-Spielraum uses the Node runtime provided by Codex when available; you do not need
-to install Node or Bun separately. An invited Spielraum beta account is required
-to sign in.
+Spielraum uses the Node runtime provided by Codex when available. The launcher
+requires Node 24+ with `node:sqlite`; if runtime discovery fails, follow the
+plugin's troubleshooting instructions. Bun is not required to run the plugin.
+An invited Spielraum beta account is required to sign in.
 
 ### Manual install
 

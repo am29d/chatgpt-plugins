@@ -6,7 +6,7 @@ planner. Each signed-in account keeps its own saved home on this computer.
 ## Requirements and setup
 
 - A supported desktop host with local MCP plugin execution and MCP App UI.
-- macOS and Codex desktop. The launcher discovers the host-provided runtime; no separate Node or Bun installation is normally needed.
+- macOS and a supported desktop host. The launcher uses an available Node.js 24+ runtime with `node:sqlite`, preferring the host runtime; Bun is not required to run the plugin.
 - An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
 - macOS Keychain access. Windows/Linux credential adapters are pending for this Node candidate; there is no plaintext fallback.
 
