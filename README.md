@@ -13,14 +13,26 @@ Paste this into Codex on macOS:
 
 > Install Spielraum from the public `am29d/chatgpt-plugins` marketplace, open it, and guide me through sign-in.
 
-Spielraum uses the Node runtime provided by Codex when available. The launcher
-requires Node 24+ with `node:sqlite`; if runtime discovery fails, follow the
-plugin's troubleshooting instructions. Bun is not required to run the plugin.
+Spielraum finds Node 24+ with built-in SQLite automatically, preferring the desktop
+host's runtime, then known Codex runtime locations, then PATH. The package contains
+no runtime or compiled helper. Bun is not required to run the plugin.
 An invited Spielraum beta account is required to sign in.
+
+### Windows startup testing
+
+This build includes a Windows starter whose automated package checks pass on Windows 2025 x64. You can test marketplace installation, server startup and opening the sign-in panel.
+
+**Windows sign-in and authenticated home editing are not available yet:** secure Windows credential storage is still unfinished. Use macOS with an invited beta account for a full planner test.
+
+For a Windows startup test, paste this into Codex:
+
+> Install Spielraum from the public `am29d/chatgpt-plugins` marketplace and open its sign-in panel. Help me identify any installation or startup errors.
+
+Actual Windows desktop-app installation and rendering still need tester verification.
 
 ### Manual install
 
-In Codex on macOS, add the public marketplace:
+In Codex, add the public marketplace:
 
 ```sh
 codex plugin marketplace add am29d/chatgpt-plugins --ref main

@@ -5,10 +5,9 @@ planner. Each signed-in account keeps its own saved home on this computer.
 
 ## Requirements and setup
 
-- A supported desktop host with local MCP plugin execution and MCP App UI.
-- macOS and a supported desktop host. The launcher uses an available Node.js 24+ runtime with `node:sqlite`, preferring the host runtime; Bun is not required to run the plugin.
+- A desktop host supporting local MCP plugins and MCP App UI. The text entrypoint finds Node.js 24+ with `node:sqlite`, preferring the host-provided runtime, then known Codex runtime locations, then PATH. Bun is not required to run the plugin.
 - An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
-- macOS Keychain access. Windows/Linux credential adapters are pending for this Node candidate; there is no plaintext fallback.
+- macOS Keychain for sign-in and authenticated home editing. Windows is available for installation/startup testing only; secure Windows credential storage is not implemented. There is no plaintext fallback.
 
 Follow the [marketplace installation instructions](../../README.md), install
 `spielraum-chatgpt@am29d-plugins`, and start a new chat. Ask:
@@ -54,7 +53,7 @@ a database migrated by a newer version. Undo history is not a backup.
 - Cloud backup, cross-device sync and a hosted ChatGPT web app are not included.
 - Embedded keyboard defaults remain disabled; use Search, Undo/Redo and other
   visible controls. Custom shortcut compatibility still needs real-host validation.
-- If runtime discovery fails, update the desktop host or configure `CODEX_MCP_NODE_PATH` to an existing Node.js 24+ executable. Do not paste credentials into chat.
+- The desktop app normally supplies Node automatically. If startup reports no runtime, update the desktop app and retry; diagnostics can use `CODEX_MCP_NODE_PATH` to select an existing Node.js 24+ runtime explicitly. Do not paste credentials into chat.
 - OS/host coverage is limited to the verification documented for each release;
   the package being JavaScript is not proof of Windows/Linux host compatibility.
 
