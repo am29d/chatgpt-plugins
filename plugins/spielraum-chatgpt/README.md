@@ -7,7 +7,7 @@ planner. Each signed-in account keeps its own saved home on this computer.
 
 - A desktop host supporting local MCP plugins and MCP App UI. The text entrypoint finds Node.js 24+ with `node:sqlite`, preferring the host-provided runtime, then known Codex runtime locations, then PATH. Bun is not required to run the plugin.
 - An invited Spielraum Clerk beta account and connectivity for sign-in/revalidation.
-- macOS Keychain for sign-in and authenticated home editing. Windows is available for installation/startup testing only; secure Windows credential storage is not implemented. There is no plaintext fallback.
+- Secure credential storage: macOS Keychain or Windows DPAPI tied to the current Windows user. Windows uses the system-provided Windows PowerShell; no separate helper installation is required. There is no plaintext fallback.
 
 Follow the [marketplace installation instructions](../../README.md), install
 `spielraum-chatgpt@am29d-plugins`, and start a new chat. Ask:

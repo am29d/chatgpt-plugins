@@ -18,17 +18,17 @@ host's runtime, then known Codex runtime locations, then PATH. The package conta
 no runtime or compiled helper. Bun is not required to run the plugin.
 An invited Spielraum beta account is required to sign in.
 
-### Windows startup testing
+### Windows login testing
 
-This build includes a Windows starter whose automated package checks pass on Windows 2025 x64. You can test marketplace installation, server startup and opening the sign-in panel.
+This candidate adds encrypted Windows credential storage. Install or update Spielraum, restart the desktop app or start a fresh chat, and sign in with an invited beta account. Check that the planner opens, then restart the app and check that the session and home are restored.
 
-**Windows sign-in and authenticated home editing are not available yet:** secure Windows credential storage is still unfinished. Use macOS with an invited beta account for a full planner test.
+Credentials use Windows DPAPI protection tied to your Windows user. The system-provided Windows PowerShell must be available; no manual script setup or separate helper installation is needed. Live Clerk sign-in in the Windows desktop host remains a tester acceptance check.
 
-For a Windows startup test, paste this into Codex:
+For a Windows test, paste this into Codex:
 
-> Install Spielraum from the public `am29d/chatgpt-plugins` marketplace and open its sign-in panel. Help me identify any installation or startup errors.
+> Update Spielraum from the public `am29d/chatgpt-plugins` marketplace to version `0.8.0-node.9`, open it, and guide me through sign-in. Help me check restart persistence and sign-out without deleting my home.
 
-Actual Windows desktop-app installation and rendering still need tester verification.
+The Clerk page still shows Development mode because this beta uses the Spielraum development instance.
 
 ### Manual install
 
