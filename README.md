@@ -9,7 +9,7 @@ inspected.
 
 ### Quick install with one prompt
 
-Paste this into Codex on macOS:
+Paste this into Codex on macOS or Windows:
 
 > Install Spielraum from the public `am29d/chatgpt-plugins` marketplace, open it, and guide me through sign-in.
 
@@ -18,15 +18,15 @@ host's runtime, then known Codex runtime locations, then PATH. The package conta
 no runtime or compiled helper. Bun is not required to run the plugin.
 An invited Spielraum beta account is required to sign in.
 
-### Windows login testing
+### Current tester build: 0.8.0-node.10
 
-This candidate adds encrypted Windows credential storage. Install or update Spielraum, restart the desktop app or start a fresh chat, and sign in with an invited beta account. Check that the planner opens, then restart the app and check that the session and home are restored.
+This build combines the current planner UI, including the fine white furniture selection contour, updated furniture controls and R/D/X actions, with the Windows login implementation. Install or update Spielraum, restart the desktop app or start a fresh chat, and sign in with an invited beta account. Check that the planner opens, then restart the app and check that the session and home are restored.
 
-Credentials use Windows DPAPI protection tied to your Windows user. The system-provided Windows PowerShell must be available; no manual script setup or separate helper installation is needed. Live Clerk sign-in in the Windows desktop host remains a tester acceptance check.
+Credentials use Windows DPAPI protection tied to your Windows user. The system-provided Windows PowerShell must be available; no manual script setup or separate helper installation is needed. Windows installation and browser sign-in with node.9 were confirmed by a tester. Restart persistence, sign-out and rendering still need acceptance in the target desktop host.
 
 For a Windows test, paste this into Codex:
 
-> Update Spielraum from the public `am29d/chatgpt-plugins` marketplace to version `0.8.0-node.9`, open it, and guide me through sign-in. Help me check restart persistence and sign-out without deleting my home.
+> Update Spielraum from the public `am29d/chatgpt-plugins` marketplace to version `0.8.0-node.10`, open it, and guide me through sign-in. Help me check restart persistence and sign-out without deleting my home.
 
 The Clerk page still shows Development mode because this beta uses the Spielraum development instance.
 
@@ -60,7 +60,7 @@ codex plugin marketplace upgrade am29d-plugins
 codex plugin add spielraum-chatgpt@am29d-plugins
 ```
 
-Restart the desktop app or start a new session after updating. For a fixed release,
+Confirm that the installed Spielraum version is `0.8.0-node.10`, then fully restart the desktop app and start a new session. An already-running conversation can keep the previous plugin process and UI loaded. For a fixed release,
 add the marketplace with `--ref <release-tag>` instead of `--ref main`. Tags identify
 immutable marketplace snapshots; use `main` for the latest catalog.
 

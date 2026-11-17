@@ -299,7 +299,8 @@ some details remain unknown. Do not infer a complete plan from floor names.
 Do not silently substitute the original reference apartment or house.
 
 Floor switching, 2D/3D, room focus, orbit/pan/zoom, walls and measurements stay
-local in the UI. Shadows remain off. No model tool is needed for view controls.
+local in the UI. The 3D view uses soft shadows; the 2D plan does not. No model
+tool is needed for view controls.
 The Furniture menu selects a piece for the OpenAI UI inspector. Users can unlock
 its room, edit dimensions and appearance, drag in 2D/3D, duplicate, remove and
 undo. Enter or blur saves a numeric field; Escape cancels it. Manual edits use the

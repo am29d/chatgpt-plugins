@@ -28,7 +28,8 @@ The home, undo history and preferences are stored in
 `~/.local/share/spielraum/profiles/<account-hash>/workspace.sqlite`, outside the plugin installation.
 Updates replace the plugin files while preserving that directory. Multiple chats
 and local plugin processes share the currently signed-in account's home.
-**Sign out** clears device credentials and preserves homes. Account switching
+**Sign out** clears the local session and preserves homes; credential deletion is
+best effort if the OS credential store fails. Account switching
 opens a separate profile. This does not encrypt homes or protect them from the
 local OS user.
 
@@ -51,8 +52,7 @@ a database migrated by a newer version. Undo history is not a backup.
 - Someone controlling the local executable can modify it to bypass the gate.
   The older `0.7.0-beta.1` release has no login gate.
 - Cloud backup, cross-device sync and a hosted ChatGPT web app are not included.
-- Embedded keyboard defaults remain disabled; use Search, Undo/Redo and other
-  visible controls. Custom shortcut compatibility still needs real-host validation.
+- R rotates selected editable furniture 45° clockwise, D duplicates it and X removes it. Other embedded keyboard defaults remain disabled; use Search, Undo/Redo and other visible controls. Custom shortcut compatibility still needs real-host validation.
 - The desktop app normally supplies Node automatically. If startup reports no runtime, update the desktop app and retry; diagnostics can use `CODEX_MCP_NODE_PATH` to select an existing Node.js 24+ runtime explicitly. Do not paste credentials into chat.
 - OS/host coverage is limited to the verification documented for each release;
   the package being JavaScript is not proof of Windows/Linux host compatibility.
