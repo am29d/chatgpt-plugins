@@ -201,6 +201,29 @@ set_floor accept optional operationId for durable exact retries. Use a fresh ID
 when deliberately recreating an identical undone home. Receipts return current
 state plus the original operationRevision; never treat an old retry as a new edit.
 
+## Save furniture from a product page or image
+
+When the user wants to keep an item for later, review the chosen product
+variant's page, a direct image URL or the uploaded image using the host's
+available tools. If the source is inaccessible, ask for a screenshot. Clarify
+ambiguous variants and ask for overall measurements where size matters.
+
+Use prepare_library_item with one editable ThreeJSON model and width, depth and
+height in meters. For each dimension, use listing for published dimensions of
+that variant, user for user-supplied measurements, or estimated. Keep the source
+link or a short upload note. Identify the approximation and review uncertain
+dimensions in chat. The planner shows the draft under Furniture → Library →
+My items. Let the user save it there, or call save_library_item with the draft
+revision after the user approves. Set acceptEstimated only after the user
+accepts the remaining estimates.
+
+Saving an item leaves the home unchanged. For a placement requested in chat,
+use list_library_items to find the saved ID and revision, then use add-library
+in apply_furniture_changes with libraryItemId, expectedLibraryRevision, a fresh
+placed-item ID and the destination floor and room. Placement creates an editable
+copy and follows the usual lock, fit and history rules. Treat estimated size as
+provisional when discussing real-world fit.
+
 ## Uploaded furniture photos
 
 Visually inventory the actual attachments first: visible objects, count, shape,

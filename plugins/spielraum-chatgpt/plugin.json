@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "spielraum-chatgpt",
-  "version": "0.8.0-node.11",
+  "version": "0.8.0-node.12",
   "description": "Model apartments and multi-floor houses through chat with the Spielraum planner.",
   "extensions": {
     "com.openai": {
