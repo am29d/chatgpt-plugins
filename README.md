@@ -20,17 +20,17 @@ host's runtime, then known Codex runtime locations, then PATH. The package conta
 no runtime or compiled helper. Bun is not required to run the plugin.
 An invited Spielraum beta account is required to sign in.
 
-### Current tester build · 0.8.0-node.13
+### Current tester build · 0.8.0-node.15
 
-This build improves the 3D planner with softer studio lighting, room-focused walls, skirting, and detailed door frames and handles. Use **View options → 3D display → Doors** to preview hinged and pocket doors open or closed.
+In the 2D Planner, hover or tap a wall section to see its length. Select furniture to see its wall clearance, then point at another piece or wall section to compare the gap. Measurements also work in locked rooms.
 
-**My items** groups placed furniture by room and follows room focus. Saved imports retain their placement links across renames and note edits. Furniture resizing can redirect growth away from a wall and tells you when a neighboring room needs to be unlocked.
+Furniture inspectors now share a consistent layout and can unlock individual pieces. The 3D Planner renders on demand and reuses floor resources to reduce GPU work.
 
 Credentials use Windows DPAPI protection tied to your Windows user. The system-provided Windows PowerShell must be available; no manual script setup or separate helper installation is needed. Windows installation and browser sign-in with node.9 were confirmed by a tester. Restart persistence, sign-out and rendering still need acceptance in the target desktop host.
 
 For a Windows test, paste this into Codex:
 
-> Update Spielraum from the public `am29d/chatgpt-plugins` marketplace to version `0.8.0-node.13`, open it, and guide me through sign-in. Help me check restart persistence and sign-out without deleting my home.
+> Update Spielraum from the public `am29d/chatgpt-plugins` marketplace to version `0.8.0-node.15`, open it, and guide me through sign-in. Help me check restart persistence and sign-out without deleting my home.
 
 The Clerk page still shows Development mode because this beta uses the Spielraum development instance.
 
@@ -64,7 +64,7 @@ codex plugin marketplace upgrade am29d-plugins
 codex plugin add spielraum-chatgpt@am29d-plugins
 ```
 
-Confirm that the installed Spielraum version is `0.8.0-node.13`, then fully restart the desktop app and start a new session. An already-running conversation can keep the previous plugin process and UI loaded. For a fixed release,
+Confirm that the installed Spielraum version is `0.8.0-node.15`, then fully restart the desktop app and start a new session. An already-running conversation can keep the previous plugin process and UI loaded. For a fixed release,
 add the marketplace with `--ref <release-tag>` instead of `--ref main`. Tags identify
 immutable marketplace snapshots; use `main` for the latest catalog.
 
